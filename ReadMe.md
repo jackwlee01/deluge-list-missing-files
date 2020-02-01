@@ -6,5 +6,5 @@ Only tested on Mac OS.
 2. npm install
 3. Run the following command, substituting the name of your SD Card:
 ```
-node index.js '/Volumes/${NAME OF SD CARD}/'
+node index.js '/Volumes/NAME_OF_SD_CARD/'
 ```
