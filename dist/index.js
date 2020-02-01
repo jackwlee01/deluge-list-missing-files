@@ -42,6 +42,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = __importDefault(require("fs"));
 var glob_1 = __importDefault(require("glob"));
 var xml2js_1 = __importDefault(require("xml2js"));
+var args = process.argv.slice(2);
+console.log(args);
+var $path = args[0];
+check($path, "/SYNTHS/**/*.XML");
+check($path, "/KITS/**/*.XML");
+check($path, "/SONGS/**/*.XML");
+console.log("DONE");
 function parseString(xml) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -53,13 +60,16 @@ function parseString(xml) {
         });
     });
 }
-function check(globPath) {
+function check(argPath, globPath) {
     return __awaiter(this, void 0, void 0, function () {
-        var xmlFiles, _loop_1, i;
+        var resolvedPath, xmlFiles, _loop_1, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    xmlFiles = glob_1.default.sync(globPath);
+                    if (argPath[argPath.length] == "/")
+                        argPath = argPath.slice(0, argPath.length - 1);
+                    resolvedPath = argPath + globPath;
+                    xmlFiles = glob_1.default.sync(resolvedPath);
                     _loop_1 = function () {
                         var filePath, xml, data, e_1, files, missingFiles;
                         return __generator(this, function (_a) {
@@ -124,7 +134,7 @@ function check(globPath) {
                                     catch (e) { }
                                     missingFiles = files.filter(function (file) { return file != "" && file != undefined && !fs_1.default.existsSync(file); });
                                     if (missingFiles.length > 0) {
-                                        console.log("MISSING FOR: " + filePath);
+                                        console.log("MISSING FOR " + filePath);
                                         missingFiles.forEach(function (file) { return console.log("    " + file); });
                                     }
                                     return [2 /*return*/];
@@ -147,11 +157,4 @@ function check(globPath) {
         });
     });
 }
-//check('./SD/SYNTHS/**/*.XML');
-//check('./SD/KITS/**/*.XML');
-check('./SD/SONGS/**/*.XML');
-console.log("Done");
-//console.log(synths[0]);
-//console.log(filePath);
-//console.log(data);
 //# sourceMappingURL=index.js.map

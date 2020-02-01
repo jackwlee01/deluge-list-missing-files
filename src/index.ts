@@ -2,6 +2,16 @@ import fs from 'fs'
 import glob from 'glob'
 import XML from 'xml2js'
 
+var args = process.argv.slice(2);
+console.log(args)
+const $path = args[0];
+
+check($path, `/SYNTHS/**/*.XML`);
+check($path, `/KITS/**/*.XML`);
+check($path, `/SONGS/**/*.XML`);
+
+console.log("DONE");
+
 
 async function parseString(xml:string):Promise<any>{
     return new Promise(resolve => {
@@ -12,8 +22,10 @@ async function parseString(xml:string):Promise<any>{
 }
 
 
-async function check(globPath:string){
-    const xmlFiles = glob.sync(globPath);
+async function check(argPath:string, globPath:string){
+    if(argPath[argPath.length] == "/") argPath = argPath.slice(0, argPath.length-1)
+    const resolvedPath = argPath + globPath;
+    const xmlFiles = glob.sync(resolvedPath);
 
     for(var i = 0; i < xmlFiles.length; i++){
         const filePath = xmlFiles[i]
@@ -49,21 +61,9 @@ async function check(globPath:string){
         
         const missingFiles = files.filter(file => file != "" && file != undefined && !fs.existsSync(file));
         if(missingFiles.length > 0){
-            console.log("MISSING FOR: " + filePath);
+            console.log("MISSING FOR " + filePath);
             missingFiles.forEach(file => console.log("    " + file));
         }
     }
 }
 
-
-
-//check('./SD/SYNTHS/**/*.XML');
-//check('./SD/KITS/**/*.XML');
-check('./SD/SONGS/**/*.XML');
-
-console.log("Done");
-//console.log(synths[0]);
-
-
-//console.log(filePath);
-//console.log(data);
