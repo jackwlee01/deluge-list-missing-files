@@ -1,4 +1,6 @@
-# Usage
+Only tested on Mac OS. 
+
+## Usage
 
 1. Install Node.js
 2. npm install
