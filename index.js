@@ -9,8 +9,6 @@ check($path, `/SYNTHS/**/*.XML`);
 check($path, `/KITS/**/*.XML`);
 check($path, `/SONGS/**/*.XML`);
 
-console.log("DONE");
-
 
 async function parseString(xml){
     return new Promise(resolve => {
@@ -58,7 +56,7 @@ async function check(argPath, globPath){
 
         try{ data.song.sessionClips.forEach((sc) => sc.audioClip.forEach((ac) => files.push(ac.$.filePath))) }catch(e){}
         
-        const missingFiles = files.filter(file => file != "" && file != undefined && !fs.existsSync(file));
+        const missingFiles = files.filter(file => file != "" && file != undefined && !fs.existsSync(argPath + file));
         if(missingFiles.length > 0){
             console.log("MISSING FOR " + filePath);
             missingFiles.forEach(file => console.log("    " + file));
