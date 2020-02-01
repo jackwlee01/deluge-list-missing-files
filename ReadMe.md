@@ -1,6 +1,4 @@
-A utility for Synthstrom Deluge users to log out missing files on the SD card.
-
-Usage:
+# Usage
 
 1. Install Node.js
 2. npm install
