@@ -101,7 +101,28 @@ function check(globPath) {
                                         data.kit.soundSources.forEach(function (sound) { return sound.sound.forEach(function (sound) { return sound.osc2.forEach(function (osc) { return files.push(osc.$.fileName); }); }); });
                                     }
                                     catch (e) { }
-                                    missingFiles = files.filter(function (file) { return file != undefined && !fs_1.default.existsSync(file); });
+                                    // Song
+                                    try {
+                                        data.song.instruments.forEach(function (ins) { return ins.sound.forEach(function (sound) { return sound.osc1.forEach(function (osc) { return files.push(osc.$.fileName); }); }); });
+                                    }
+                                    catch (e) { }
+                                    try {
+                                        data.song.instruments.forEach(function (ins) { return ins.sound.forEach(function (sound) { return sound.osc2.forEach(function (osc) { return files.push(osc.$.fileName); }); }); });
+                                    }
+                                    catch (e) { }
+                                    try {
+                                        data.song.instruments.forEach(function (ins) { return ins.kit.forEach(function (kit) { return kit.soundSources.forEach(function (ss) { return ss.sound.forEach(function (s) { return s.osc1.forEach(function (osc) { return files.push(osc.$.fileName); }); }); }); }); });
+                                    }
+                                    catch (e) { }
+                                    try {
+                                        data.song.instruments.forEach(function (ins) { return ins.kit.forEach(function (kit) { return kit.soundSources.forEach(function (ss) { return ss.sound.forEach(function (s) { return s.osc2.forEach(function (osc) { return files.push(osc.$.fileName); }); }); }); }); });
+                                    }
+                                    catch (e) { }
+                                    try {
+                                        data.song.sessionClips.forEach(function (sc) { return sc.audioClip.forEach(function (ac) { return files.push(ac.$.filePath); }); });
+                                    }
+                                    catch (e) { }
+                                    missingFiles = files.filter(function (file) { return file != "" && file != undefined && !fs_1.default.existsSync(file); });
                                     if (missingFiles.length > 0) {
                                         console.log("MISSING FOR: " + filePath);
                                         missingFiles.forEach(function (file) { return console.log("    " + file); });
@@ -126,8 +147,9 @@ function check(globPath) {
         });
     });
 }
-check('./SD/SYNTHS/**/*.XML');
-check('./SD/KITS/**/*.XML');
+//check('./SD/SYNTHS/**/*.XML');
+//check('./SD/KITS/**/*.XML');
+check('./SD/SONGS/**/*.XML');
 console.log("Done");
 //console.log(synths[0]);
 //console.log(filePath);
