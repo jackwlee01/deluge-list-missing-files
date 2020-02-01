@@ -2,7 +2,7 @@ Only tested on Mac OS.
 
 ## Overview
 
-This programm will look at all XML files for kits, synths, and songs and identifiy which file are missing. See below for an example log output.
+This program will look at all XML files for kits, synths, and songs and identifiy which files are missing. See below for an example log output.
 
 ## Usage
 
