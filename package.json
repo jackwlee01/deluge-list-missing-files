@@ -2,10 +2,10 @@
   "name": "deluge-missing-files",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "missing-deluge-files.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "pkg index.js --out-path ./bin/"
+    "start": "node missing-deluge-files.js",
+    "build": "pkg missing-deluge-files.js --out-path ./bin/"
   },
   "author": "Jack Lee",
   "license": "MIT",
