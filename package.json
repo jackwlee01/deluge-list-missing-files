@@ -3,11 +3,21 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js",
+    "build": "pkg index.js --out-path ./bin/"
+  },
   "author": "Jack Lee",
   "license": "MIT",
+  "bin": "bin.js",
   "dependencies": {
     "glob": "^7.1.6",
     "xml2js": "^0.4.23"
+  },
+  "engines": {
+    "node": ">=10.10.0 <11.0.0"
+  },
+  "devDependencies": {
+    "pkg": "^4.4.2"
   }
 }
