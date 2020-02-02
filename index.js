@@ -40,14 +40,15 @@ function prompt(){
             console.log('Checking...');
             console.log('');
             console.log('');
-            await check(name, `SYNTHS/**/*.XML`);
-            await check(name, `KITS/**/*.XML`);
-            await check(name, `SONGS/**/*.XML`);
+            const pass1 = await check(name, `SYNTHS/**/*.XML`);
+            const pass2 = await check(name, `KITS/**/*.XML`);
+            const pass3 = await check(name, `SONGS/**/*.XML`);
 
             console.log('');
             console.log('');
-            console.log("DONE");
-            
+            if(pass1 && pass2 && pass3) console.log("No missing files detected");
+            else console.log("Missing files detected. See above.")
+
             rl.question("Press ENTER to check again, or 'Q' to quit: ", function(s){
                 if(s.toUpperCase() == "Q" || s.toUpperCase() == "QUIT" || s.toUpperCase() == "EXIT"){
                     rl.close();
@@ -80,6 +81,8 @@ async function parseString(xml){
 async function check(argPath, globPath){
     const resolvedPath = argPath + globPath;
     const xmlFiles = glob.sync(resolvedPath);
+
+    let passed = true;
 
     for(var i = 0; i < xmlFiles.length; i++){
         const filePath = xmlFiles[i]
@@ -118,7 +121,10 @@ async function check(argPath, globPath){
         if(missingFiles.length > 0){
             console.log("MISSING: " + filePath);
             missingFiles.forEach(file => console.log("    - " + file));
+            passed = false;
         }
     }
+
+    return passed;
 }
 
