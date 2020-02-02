@@ -2,12 +2,64 @@ const fs = require('fs')
 const glob = require('glob')
 const XML = require('xml2js')
 
-var args = process.argv.slice(2);
-const $path = args[0];
 
-check($path, `/SYNTHS/**/*.XML`);
-check($path, `/KITS/**/*.XML`);
-check($path, `/SONGS/**/*.XML`);
+const readline = require("readline");
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+
+
+function prompt(){
+    rl.question("Enter location of SD card: ", function(name) {
+        performCheck();
+        async function performCheck(){
+            if(name.toUpperCase() == "Q" || name.toUpperCase() == "QUIT" || name.toUpperCase() == "EXIT"){
+                rl.close();
+                process.exit(0);
+                return;
+            }
+
+            //if(name == "") name = '/VOLUMES/NO NAME/';
+            if(name[name.length-1] != "/") name = name + "/"
+
+            if(fs.existsSync(name) == false){
+                console.log("SD Card not found: " + name);
+                console.log("Try again?");
+                prompt();
+                return;
+            }
+
+            console.log('Checking...');
+            console.log('');
+            console.log('');
+            await check(name, `SYNTHS/**/*.XML`);
+            await check(name, `KITS/**/*.XML`);
+            await check(name, `SONGS/**/*.XML`);
+
+            console.log('');
+            console.log('');
+            console.log("DONE");
+            
+            rl.question("Press ENTER to check again, or 'Q' to quit: ", function(s){
+                if(s.toUpperCase() == "Q" || s.toUpperCase() == "QUIT" || s.toUpperCase() == "EXIT"){
+                    rl.close();
+                    process.exit(0);
+                    return;
+                }else{
+                    performCheck();
+                }
+            })
+            
+        }
+
+    });
+}
+
+
+prompt();
+
 
 
 async function parseString(xml){
@@ -20,7 +72,6 @@ async function parseString(xml){
 
 
 async function check(argPath, globPath){
-    if(argPath[argPath.length] == "/") argPath = argPath.slice(0, argPath.length-1)
     const resolvedPath = argPath + globPath;
     const xmlFiles = glob.sync(resolvedPath);
 
@@ -57,9 +108,10 @@ async function check(argPath, globPath){
         try{ data.song.sessionClips.forEach((sc) => sc.audioClip.forEach((ac) => files.push(ac.$.filePath))) }catch(e){}
         
         const missingFiles = files.filter(file => file != "" && file != undefined && !fs.existsSync(argPath + file));
+        
         if(missingFiles.length > 0){
-            console.log("MISSING FOR " + filePath);
-            missingFiles.forEach(file => console.log("    " + file));
+            console.log("MISSING: " + filePath);
+            missingFiles.forEach(file => console.log("    - " + file));
         }
     }
 }
