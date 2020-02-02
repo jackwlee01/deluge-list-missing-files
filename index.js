@@ -15,6 +15,7 @@ function prompt(){
     rl.question("Enter location of SD card: ", function(name) {
         performCheck();
         async function performCheck(){
+            
             if(name.toUpperCase() == "Q" || name.toUpperCase() == "QUIT" || name.toUpperCase() == "EXIT"){
                 rl.close();
                 process.exit(0);
@@ -22,6 +23,11 @@ function prompt(){
             }
 
             //if(name == "") name = '/VOLUMES/NO NAME/';
+
+            if(name == ""){
+                prompt();
+                return;
+            }
             if(name[name.length-1] != "/") name = name + "/"
 
             if(fs.existsSync(name) == false){
